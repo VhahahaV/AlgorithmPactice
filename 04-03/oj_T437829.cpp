@@ -6,9 +6,7 @@
 
 using namespace std;
 
-
-
-int handleBracket(string md){
+int handleBracket(string md)    {
     if (md[0] == '{' || md[0] == '['){
         stack<int> tmp;
 
@@ -26,13 +24,29 @@ int handleBracket(string md){
 }
 
 int handleNumber(string md){
-    for(int i = 0 ; i < md.size(); i++)
-        if (md[i]<'0' || md[i] >'9' || md[i] != '.' )
-            return i-1;
+    for(int i = 0 ; i < md.size(); i++){
+        if (md[i]>='0' && md[i] <='9' || md[i] == '.' )
+            continue;
+        else
+            return i;
+    }
+    return md.size();
 }
 
-void calculateNum(stack<double> &nums , stack<char> &operations){
-    while (!operations.empty()){
+void calculateNum(stack<double> &nums , stack<char> &operations ,int level){
+    bool flag;
+    switch(level) {
+        case 1:
+            flag = !operations.empty();
+            break;
+        case 2:
+            flag = !operations.empty()&&operations.top() != '+' && operations.top() != '-';
+            break;
+        case 3:
+            flag = !operations.empty()&&operations.top() == '^';
+            break;
+    }
+    while (flag){
         char op = operations.top();
         operations.pop();
         double B = nums.top();
@@ -56,6 +70,17 @@ void calculateNum(stack<double> &nums , stack<char> &operations){
                 nums.push(pow(A,B));
                 break;
         }
+        switch(level) {
+            case 1:
+                flag = !operations.empty();
+                break;
+            case 2:
+                flag = !operations.empty()&&operations.top() != '+' && operations.top() != '-';
+                break;
+            case 3:
+                flag = !operations.empty()&&operations.top() == '^';
+                break;
+        }
     }
 }
 
@@ -73,7 +98,7 @@ double handleFormula(string md){
                 if (operations.empty() || operations.top() == '+' ||operations.top() == '-' )
                     operations.push(md[i]);
                 else{
-                    calculateNum(nums,operations);
+                    calculateNum(nums,operations,2);
                     operations.push(md[i]);
                 }
                 i+=1;
@@ -85,7 +110,7 @@ double handleFormula(string md){
                                         || operations.top() == '/' ||operations.top() == '*' )
                     operations.push(md[i]);
                 else{
-                    calculateNum(nums,operations);
+                    calculateNum(nums,operations,3);
                     operations.push(md[i]);
                 }
                 i+=1;
@@ -103,14 +128,32 @@ double handleFormula(string md){
 
 
 //            handle numbers
-            defaut:
-                int next = handleNumber(md.data());
-                string numStr(md,0,next);
+            default:
+                int next = handleNumber(string (md.begin()+i,md.end()));
+                string numStr(md,i,next);
                 double newNum = stod(numStr);
                 nums.push(newNum);
                 i+=next;
                 break;
 
         }
+
+
     }
+    if(!operations.empty())
+        calculateNum(nums,operations,1);
+
+    return nums.top();
+}
+
+int main(){
+    string formula;
+    cin >> formula;
+    double res =  handleFormula(formula);
+    int n = 0;
+    while (abs(res) > 10){
+        res /= 10;
+        n++;
+    }
+    cout << fixed << setprecision(6) << res << " " << n;
 }
