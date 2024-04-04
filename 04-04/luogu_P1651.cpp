@@ -10,7 +10,7 @@
 
 using namespace std;
 inline int getIndex(int row , int col , int heiSum){
-    return row*heiSum+col;
+    return row*(heiSum+1)+col;
 }
 int main(){
     int num;
@@ -24,16 +24,17 @@ int main(){
         heiSum += tmp;
         height.emplace_back(tmp);
     }
-    vector<int> dp((num+1) * (heiSum+1) , INT32_MIN);
-    for (int i = 0; i < heiSum; ++i) {
-        dp[i] = 0;
-    }
+    vector<int> dp((num+1) * (heiSum+1) , -50000);
+//    for (int i = 0; i < heiSum; ++i) {
+//        dp[i] = 0;
+//    }
+    dp[0] = 0;
 
-    for (int i = heiSum; i < dp.size(); ++i) {
-        int t = i / heiSum;
-        int j = i % heiSum;
+    for (int i = (heiSum + 1); i < dp.size(); ++i) {
+        int t = i / (heiSum + 1);
+        int j = i % (heiSum + 1);
 
-        dp[getIndex(t , j ,heiSum)] = max(dp[getIndex(t-1,j,heiSum)] , dp[t-1,j+height[t]]);
+        dp[getIndex(t , j ,heiSum)] = max(dp[getIndex(t-1,j,heiSum)] , dp[getIndex( t-1, j+height[t] , heiSum )] );
 
         if( j > height[t])
             dp[getIndex(t , j ,heiSum)] = max( dp[getIndex(t , j ,heiSum)], dp[getIndex(t-1, j-height[t] ,heiSum)] + height[t]);
@@ -41,7 +42,8 @@ int main(){
             dp[getIndex(t,j,heiSum)] = max( dp[getIndex(t,j,heiSum)] , dp[getIndex(t-1,height[t]-j,heiSum)] + j);
 
     }
-
-    cout << dp[(num)*heiSum];
-
+    if (dp[num*(heiSum+1)])
+        cout << dp[num*(heiSum+1)];
+    else
+        cout << -1;
 }
