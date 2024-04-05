@@ -5,38 +5,63 @@
 
 using namespace std;
 
-void getStep(string &s,int end){
-    int num;
-    if (!s.empty())
-        num = s[end] - '0';
-    else{
-        num += '1';
-        return;
+void oneStep(int sum ,string &ans,int i){
+    if (sum < 10 && ans.size() == i){
+        ans = to_string(sum) + ans;
     }
-    if (num + 1 < 10)
-        s[s.size()-1] += 1;
-    else{
-        s[s.size()-1] = 0;
-        getStep(s,end-1);
+    else if(sum < 10 && ans.size() > i){
+        if (ans.empty())
+            ans += to_string(sum);
+        else
+            ans[0] = char (sum+'0');
     }
-
+    else if (ans.size() > i){
+        if (ans.empty())
+            ans += to_string(sum%10);
+        else
+            ans[0] = char (sum%10+'0');
+        ans = to_string(sum/10) + ans;
+    }
+    else{
+        ans = to_string(sum) + ans;
+    }
 }
 
 int main(){
     string a,b;
-    string ans = "";
+    string ans;
+    ans.reserve(500);
     cin >> a >> b;
     int i = 0;
     while (i < a.size() && i < b.size()){
-        int sum =( a[i] - '0') + ( b[i] - '0');
-        if (sum < 10){
-            ans = ans + to_string(sum);
-        }
-        else{
-            getStep(ans,ans.size()-1);
-            ans = ans + to_string(sum-10);
-        }
+        int indexA = a.size() - 1 - i;
+        int indexB = b.size() - 1 - i;
+        int sum =( a[indexA] - '0') + ( b[indexB] - '0');
+        if (ans.size() > i)
+            sum += (ans[0] - '0');
+
+        oneStep(sum,ans,i);
         i++;
+    }
+    if (i != a.size()){
+        while (i < a.size()){
+            int indexA = a.size() - 1 - i;
+            int sum =( a[indexA] - '0');
+            if (ans.size() > i)
+                sum += (ans[0] - '0');
+            oneStep(sum,ans,i);
+            i++;
+        }
+    }
+    else if (i != b.size()){
+        while (i < b.size()){
+            int indexB = b.size() - 1 - i;
+            int sum =( b[indexB] - '0');
+            if (ans.size() > i)
+                sum += (ans[0] - '0');
+            oneStep(sum,ans,i);
+            i++;
+        }
     }
     cout << ans;
 }
