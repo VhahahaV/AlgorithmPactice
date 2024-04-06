@@ -4,7 +4,7 @@
 > 参考资料：
 > 洛谷 [https://www.luogu.com.cn/](https://www.luogu.com.cn/)
 > OI Wiki: [https://oi-wiki.org/](https://oi-wiki.org/)
-
+![img.png](asset/img.png)
 ## 知识点
 
 ### 模拟（重点）
