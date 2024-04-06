@@ -2,17 +2,18 @@
 // Created by CZQ on 2024/4/6.
 //
 #include "bits/stdc++.h"
-
+using ll = long long;
 using namespace std;
 int n,m;
 
 bool isOk(int x ,const vector<int> &rooms ,const vector<vector<int>> &orders){
-    vector<int> cf(n+1 , 0);
+    vector<unsigned int> cf(n+2 , 0);
     for (int i = 0; i < x; ++i) {
         cf.at(orders.at(i).at(1)) += orders.at(i).at(0);
+
         cf.at(orders.at(i).at(2) + 1) -= orders.at(i).at(0);
     }
-    int sum = 0;
+    unsigned int sum = 0;
     for (int i = 1; i <= n ; ++i) {
         sum+=cf.at(i);
         if (sum > rooms.at(i)){
