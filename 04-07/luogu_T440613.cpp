@@ -62,10 +62,10 @@ public:
                     prev->next = current->next;
                 node *del = current;
                 if (!goAhead(current,step+1,prev)){
-                    free(del);
+                    delete(del);
                     break;
                 }
-                free(del);
+                delete(del);
             }
         }
         return false;
@@ -82,7 +82,18 @@ public:
     }
 
 };
+
+array<vector<int> , 11> track;
+int getDays(int nums , int step){
+    int mem = track[step][nums];
+    if (mem != -1)
+        return mem;
+    if ((nums-1)% step == 0)
+        return 1;
+    return track[step][nums] = getDays(nums - (nums+step-1)/step , step) + 1;
+}
 int main(){
+
     int N;
     cin >> N;
     vector<int> nums(N);
@@ -92,15 +103,23 @@ int main(){
         cin >> steps[i];
     }
     vector<int> res(N);
+//    使用记忆化搜索 加 递归
     for (int i = 0; i < N; ++i) {
-        int day = 0;
-        listpoint l1(nums[i]);
-        while (++day && !l1.remove(steps[i])){
-//        l1.printAll();
-        }
-        cout << day << endl;
-
+        int step = steps[i] + 1;
+        track[step].resize(std::max<size_t>(track[step].size(), nums[i]+2),-1);
+        cout << getDays(nums[i],step) <<'\n';
     }
+
+//    构建链表
+//    for (int i = 0; i < N; ++i) {
+//        int day = 0;
+//        listpoint l1(nums[i]);
+//        while (++day && !l1.remove(steps[i])){
+////        l1.printAll();
+//        }
+//        cout << day << endl;
+//
+//    }
 //    结果： A了60%，其他TLE……
 
     return 0;

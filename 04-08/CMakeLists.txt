@@ -1,0 +1,8 @@
+cmake_minimum_required(VERSION 3.24)
+
+PROJECT(04-08)
+SET(CMAKE_CXX_STANDARD 14)
+
+ADD_EXECUTABLE(luogu_T440613_ftc luogu_T440613_ftc.cpp)
+ADD_EXECUTABLE(luogu_T441076 luogu_T441076.cpp)
+ADD_EXECUTABLE(luogu_T442363 luogu_T442363.cpp)
