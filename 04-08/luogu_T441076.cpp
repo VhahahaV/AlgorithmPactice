@@ -6,7 +6,7 @@
 using namespace std;
 
 //idea1： Q2用于充当一个队列，遇到T加一，遇到F减一。
-//idea2 层次遍历想法，将下一轮的T/F直接加在s的尾部
+//idea2  层次遍历想法，将下一轮的T/F直接加在s的尾部
 int main(){
     int n;
     string s;

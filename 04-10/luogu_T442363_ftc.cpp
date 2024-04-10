@@ -39,7 +39,7 @@ int main(){
         if(insertPos == bucket.end()){
             bucket.insert(make_pair(x, vector<int>{idx}));
         } else{
-            insertPos->second.emplace_back(idx);+
+            insertPos->second.emplace_back(idx);
         }
     };
     // put points to bucket
