@@ -66,7 +66,7 @@ int main(){
             auto& bucket = verticalBucket.at(x);
             for(auto iter=bucket.lower_bound(yMin); iter!=bucket.end()&&iter->first<=yMax; iter++){
                 for(auto pointIdx: iter->second){
-                    pointDists.at(pointIdx) = prevDist+ abs(points.at(pointIdx).second-previousPos.second);
+                        pointDists.at(pointIdx) = prevDist+ abs(points.at(pointIdx).second-previousPos.second);
                 }
             }
             prevDist += (yMax-yMin);
