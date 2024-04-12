@@ -34,8 +34,8 @@ int main(){
         cin >> roads[i].v1 >> roads[i].v2 >> roads[i].times;
     }
 //    这句表达式有问题
-//    sort(roads.begin(),roads.end(),[](Road x,Road y)->bool {return (x.times<y.times);});
-    sort(roads.begin(),roads.end(), comp);
+    sort(roads.begin(),roads.end(),[](Road x,Road y)->bool {return (x.times<y.times);});
+//    sort(roads.begin(),roads.end(), comp);
     int num = N;
     for (auto road : roads) {
         int root1 = findRoot(road.v2);
