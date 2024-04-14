@@ -1,0 +1,7 @@
+cmake_minimum_required(VERSION 3.24)
+
+SET(CMAKE_CXX_STANDARD 14)
+PROJECT(04-14)
+
+ADD_EXECUTABLE(luogu_P5905 luogu_P5905.cpp)
+ADD_EXECUTABLE(luogu_B3644 luogu_B3644.cpp)
