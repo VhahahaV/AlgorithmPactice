@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 3.24)
 
-SET(CMAKE_CXX_STANDARD 14)
+SET(CMAKE_CXX_STANDARD 17)
 PROJECT(04-14)
 
 ADD_EXECUTABLE(luogu_P1396 luogu_P1396.cpp)
+ADD_EXECUTABLE(leetcode_377 leetcode_377.cpp)
+ADD_EXECUTABLE(luogu_P1443 luogu_P1443.cpp)
+ADD_EXECUTABLE(luogu_P2199 luogu_P2199.cpp)
