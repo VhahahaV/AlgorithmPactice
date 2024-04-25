@@ -38,13 +38,24 @@ void dfs(int root, int father){
             maxCharm[root] += maxCharm[child];
     }
 }
-
-
+int ans = INT32_MIN;
+int getMax(int root, int father){
+    int current = flower[root];
+    for(auto child: relations[root]){
+        if(child == father) continue;
+        auto childSum = getMax(child, root);
+        if(childSum > 0){
+            current += childSum;
+        }
+    }
+    ans = std::max(ans, current);
+    return current;
+}
 int main(){
     int n;
     cin >> n;
     flower.resize(n+1);
-    maxCharm.resize(n+1);
+//    maxCharm.resize(n+1);
     relations.resize(n+1);
 
     for (int i = 1; i <= n; ++i) {
@@ -56,11 +67,13 @@ int main(){
         relations[s].emplace_back(t);
         relations[t].emplace_back(s);
     }
-    int ans = -INT32_MAX;
-    dfs(1,0);
-    for (int i = 1; i <= n; ++i) {
-        ans = max(ans,maxCharm[i]);
-    }
-    cout << ans;
+    getMax(1, 0);
+    cout << ans << endl;
+//    int ans = -INT32_MAX;
+//    dfs(1,0);
+//    for (int i = 1; i <= n; ++i) {
+//        ans = max(ans,maxCharm[i]);
+//    }
+//    cout << ans;
     return 0;
 }
