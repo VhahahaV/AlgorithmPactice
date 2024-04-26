@@ -4,7 +4,7 @@
 > 参考资料：
 > 洛谷 [https://www.luogu.com.cn/](https://www.luogu.com.cn/)
 > OI Wiki: [https://oi-wiki.org/](https://oi-wiki.org/)
-![img.png](asset/img.png)
+> ![problems.png](asset/problems.jpg "需要完成的题目")
 ## 知识点
 
 ### 模拟（重点）
@@ -80,3 +80,5 @@
 * 多源最短路
 * 最大流最小割 Dinic算法
 * ~~tarjan强连通算法~~
+
+> ![img.png](asset/img.png "今天运势图")

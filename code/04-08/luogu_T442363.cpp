@@ -30,7 +30,9 @@ ll getBIT(const vector<ll>&BIT,ll pos){
         sum += BIT.at(i);
     }
     return sum;
-}int main(){
+}
+
+int main(){
     cin >> n >> P;
     distances.resize(P+1,0);
     vector<array<ll,2>> points(P+1,array<ll,2>{0,0});
