@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.24)
 
-SET(CMAKE_CXX_STANDARD 17)
+SET(CMAKE_CXX_STANDARD 20)
 PROJECT(04-26)
 
 ADD_EXECUTABLE(leetcode_1146  leetcode_1146.cpp)
