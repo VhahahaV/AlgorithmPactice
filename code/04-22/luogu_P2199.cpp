@@ -4,7 +4,6 @@
 #include "bits/stdc++.h"
 
 //58min 36points
-//a不了，e了
 using namespace std;
 using loc_t = pair<int,int>;
 int main(){
