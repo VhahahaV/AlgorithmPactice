@@ -12,6 +12,7 @@
 #include "bits/stdc++.h"
 
 using namespace std;
+using node = pair<int,int>;
 
 struct edge{
     int u,v,w;
@@ -20,12 +21,32 @@ struct edge{
     }
 };
 
-void dijkstra(){
-
-}
 
 int main(){
-
-
+    priority_queue<node,vector<node>,greater<node>> candidate;
+    vector<int> ans;
+    int n,m,s;
+    cin >> n >> m >> s;
+    vector<vector<node>> maze(n+1);
+    ans.resize(n+1,INT32_MAX);
+    while (m--){
+        int u,v,w;
+        cin >> u >> v >> w;
+        maze[u].emplace_back(w,v);
+    }
+    candidate.emplace(0,s);
+    while (!candidate.empty()){
+        auto cur = candidate.top();
+        candidate.pop();
+        if (ans[cur.second] != INT32_MAX){
+            continue;
+        }
+        ans[cur.second] = cur.first;
+        for(auto &it : maze[cur.second])
+            candidate.emplace(cur.first+it.first,it.second);
+    }
+    for (int i = 1; i <= n; ++i) {
+        cout << ans[i] <<' ';
+    }
     return 0;
 }
