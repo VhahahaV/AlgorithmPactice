@@ -1,4 +1,4 @@
-![img.png](../../asset/img.png)
+![img.png](../../../asset/img.png)
 # 最大正方形
 
 ## 题目描述
