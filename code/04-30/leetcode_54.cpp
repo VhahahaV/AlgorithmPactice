@@ -1,3 +1,6 @@
+//
+// Created by VhahahaV on 2024/4/30.
+//
 #include <iostream>
 #include <vector>
 #include <utility>
@@ -11,7 +14,7 @@ public:
         int i  = 0,j = 0;
         int flag = 0;
         vector<int> ans;
-//        ans.reserve(sum);
+
         const int nRows = matrix.size(), nCols = matrix[0].size();
         auto shouldTurn = [&](int i , int j, int flag)->bool {
             int round = flag / 4;
@@ -28,10 +31,10 @@ public:
                 return true;
             return false;
         };
+
         vector<pair<int,int>> dxys = { {0,1}, {1,0},{0,-1},{-1,0}};
         for (int step = 0; step < sum; ++step) {
             ans.emplace_back(matrix[i][j]);
-
 //            turn
             if(shouldTurn(i,j,flag)){
                 flag++;
@@ -43,12 +46,3 @@ public:
         return ans;
     }
 };
-
-int main(){
-    vector<vector<int>> mat = {
-            {1,2,3,4}, {5,6,7,8}, {9,10,11,12},{13,14,15,16}
-    };
-    Solution solution;
-    auto result = solution.spiralOrder(mat);
-    return 0;
-}
