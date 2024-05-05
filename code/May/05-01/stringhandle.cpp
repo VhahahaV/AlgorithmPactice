@@ -9,11 +9,6 @@
 using namespace std;
 
 const std::vector<char> OP = {'=', '{', '}', '+', '-', '*', '/', '(', ')'};
-///mapping from param's name to index in formula
-std::map<std::string, int> params;
-///param nums
-int nums = 0;
-
 enum TAG {
     num,
     op,
@@ -33,13 +28,12 @@ struct Word {
 
     void checkValidVariableName() {
         if (tag == num) {
-            int first = 0, i = 0;
-            while (i < name.size()) {
+            int first = 0;
+            for (int i = 0;i < name.size();i++) {
                 if (name[i] == '.') {
                     if (first) throw runtime_error("Digit must have only one .");
                     else first = i;
                 }
-                i++;
             }
 
         } else if (tag == param) {
@@ -57,9 +51,15 @@ struct Word {
 
 struct Formula {
     vector<double> coefficient{};
-    using value = pair<double,pair<int, TAG>>;
-    explicit Formula(vector<Word>& words) {
-        coefficient.resize(params.size()+1, 0.0);  // Ensure coefficients are sized correctly
+//    using value = pair<double,pair<int, TAG>>;
+    struct value{
+        double val;
+        int index;
+        TAG tag;
+        value(double v,int i , TAG t):val(v),index(i),tag(t){}
+    };
+    explicit Formula(vector<Word>& words,const map<std::string, int> &params) {
+        coefficient.resize(params.size() +1, 0.0);  // Ensure coefficients are sized correctly
         {
             int i = 0;
             while(words[i].name != "=")
@@ -73,16 +73,16 @@ struct Formula {
                 words.front().name = "-" + words.front().name;
             }
         }
-        auto res = parseExpression(0,int(words.size()-1),words);
-        for(auto val : res){
-            if (val.second.second == num)
-                coefficient.back() -= val.first;
+        auto res = parseExpression(0,int(words.size()-1),words,params);
+        for(auto &it : res){
+            if (it.tag == num)
+                coefficient.back() -= it.val;
             else
-                coefficient[val.second.first] += val.first;
+                coefficient[it.index] += it.val;
         }
     }
 
-    vector<value> parseExpression(int start,int end, vector<Word>& words) {
+    vector<value> parseExpression(int start,int end, vector<Word>& words,const map<std::string, int> &params) {
         if (start > end)
             throw runtime_error("error using ()");
 
@@ -96,7 +96,7 @@ struct Formula {
         stack<vector<value>> values;
         stack<char> ops;
         auto applyOp = [&](vector<value> &a, vector<value> &b, char op)->vector<value> {
-            int haveParams = (a.front().second.second == param) + (b.front().second.second == param);
+            int haveParams = (a.front().tag == param) + (b.front().tag == param);
             vector<value> res;
 //            param (op) param
             if (haveParams == 2){
@@ -109,7 +109,7 @@ struct Formula {
                     for(auto &it : a)
                         res.emplace_back(it);
                     for(auto &it : b){
-                        it.first *= flag;
+                        it.val *= flag;
                         res.emplace_back(it);
                     }
                     return res;
@@ -117,25 +117,25 @@ struct Formula {
             }
 //            param (op) num
             else if(haveParams == 1){
-                if(b.front().second.second == param && op == '/')
+                if(b.front().tag == param && op == '/')
                     throw runtime_error("not linear");
 //                a is param
                 bool swaped = false;
-                if (a.front().second.second == num){
+                if (a.front().tag == num){
                     swap(a,b);
                     swaped = true;
                 }
-                double n = b.front().first;
+                double n = b.front().val;
                 if (precedence(op) == 2){
                     if (op == '*'){
                         for(auto &it : a){
-                            it.first *= n;
+                            it.val *= n;
                             res.emplace_back(it);
                         }
                     }
                     else{
                         for(auto &it : a){
-                            it.first /= n;
+                            it.val /= n;
                             res.emplace_back(it);
                         }
                     }
@@ -144,14 +144,14 @@ struct Formula {
                     if (op == '-'){
                         if (swaped)
                             for(auto &it : a)
-                                it.first *= -1;
+                                it.val *= -1;
                         else
                             n *= -1;
                     }
-                    if (a.back().second.second == num)
-                        a.back().first += n;
+                    if (a.back().tag == num)
+                        a.back().val += n;
                     else
-                        a.emplace_back(n, make_pair(-1,num));
+                        a.emplace_back(n, -1,num);
                     for(auto &it : a)
                         res.emplace_back(it);
 
@@ -159,7 +159,7 @@ struct Formula {
             }
 //            num (op) num
             else{
-                double aNum = a.front().first, bNum = b.front().first,ans;
+                double aNum = a.front().val, bNum = b.front().val,ans;
                 switch (op) {
                     case '+':
                         ans = aNum + bNum;
@@ -176,7 +176,7 @@ struct Formula {
                     default:
                         throw runtime_error("op error");
                 }
-                res.emplace_back(ans, make_pair(-1,num));
+                res.emplace_back(ans, -1,num);
             }
             return res;
         };
@@ -190,7 +190,7 @@ struct Formula {
             vector<value> val1;
             if (values.empty())
                 if(precedence(op) == 1)
-                    val1 = vector<value>{ {0, make_pair(-1, num)} };
+                    val1 = vector<value>{ {0, -1, num} };
                 else
                     throw runtime_error("Multiplication and division symbols cannot be preceded by no numbers");
             else{
@@ -201,11 +201,11 @@ struct Formula {
         };
         for (int i = start; i <= end; ++i) {
             if (words[i].tag == num) {
-                vector<value> v{ {stod(words[i].name), make_pair(-1, num)} };
+                vector<value> v{ {stod(words[i].name), -1, num} };
                 values.emplace(v);
             }
             else if (words[i].tag == param){
-                vector<value> v{ { 1.0, make_pair(params[words[i].name],param) } };
+                vector<value> v{ { 1.0, params.at(words[i].name),param } };
                 values.emplace(v);
             }
             else if (words[i].tag == op) {
@@ -223,7 +223,7 @@ struct Formula {
                         throw runtime_error("The number of parentheses does not match");
                     i--;
                     int e = i-1;
-                    values.push(parseExpression(s,e,words));
+                    values.push(parseExpression(s,e,words,params));
                 }
                 else if (words[i].name == ")")
                     throw runtime_error("The number of parentheses does not match");
@@ -244,8 +244,8 @@ struct Formula {
     }
 
     void displayCoefficients() const {
-        for (auto coef : coefficient) {
-            cout << coef << " ";
+        for (auto &it : coefficient) {
+            cout << it << " ";
         }
     }
 };
@@ -254,11 +254,14 @@ class Calculator {
 private:
     map<string, double> ans;
     vector<Formula> formulas;
-
+    ///mapping from param's name to index in formula
+    map<std::string, int> params;
+    ///param nums
+    int nums = 0;
 public:
     explicit Calculator() = default;
 
-    static vector<Word> split(const string_view &str) {
+    vector<Word> split(const string_view &str) {
         std::vector<Word> words;
         int i = 0;
         while (i < str.size()) {
@@ -293,14 +296,8 @@ public:
                 }
             }
             Word w(content, tag);
-            try {
-                w.checkValidVariableName();
-            }
-            catch (const runtime_error &e) {
-                cerr << "Caught an exception: " << e.what() << endl;
-                exit(-1);
-            }
-            words.push_back(w);
+            w.checkValidVariableName();
+            words.push_back(std::move(w));
         }
 
         return words;
@@ -308,16 +305,12 @@ public:
 
     void readAndParse() {
         vector<vector<Word>> equations;
-        vector<string> line(100);
-        int i = 0;
-
         // read data until EOF
-        while (getline(cin, line[i])) {
-            if (line.empty()) {
+        while (true) {
+            string line;
+            if (!getline(cin, line))
                 break;
-            }
-
-            vector<Word> words = split(line[i++]);
+            vector<Word> words = split(line);
             equations.emplace_back(words);
         }
         // sort variable
@@ -327,26 +320,26 @@ public:
             pair.second = index++;
         }
         for(auto &words : equations){
-            formulas.emplace_back(words);
+            formulas.emplace_back(words,params);
         }
     }
 
     void solute(){
 
-        auto Regularization = [this](vector<double> &f,int offset){
+        auto Regularization = [](vector<double> &f,int offset){
             double size = f[offset];
             for (int i = offset; i < f.size(); ++i) {
                 f[i] /= size;
             }
         };
 
-        auto Elimination = [this](const vector<double> &f1,vector<double> &f2,int offset){
+        auto Elimination = [](const vector<double> &f1,vector<double> &f2,int offset){
             double size = f2[offset];
             for (int i = offset; i < f2.size(); ++i) {
                 f2[i] -= (size * f1[i]);
             }
         };
-        int M = params.size();
+        int M = int(params.size());
         for (int i = 0; i < M; ++i) {
             auto &f1 = formulas[i].coefficient;
             if(f1[i] == 0){
