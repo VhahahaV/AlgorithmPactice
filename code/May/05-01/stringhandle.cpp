@@ -41,8 +41,7 @@ struct Word {
                 }
                 i++;
             }
-            if (first && first == name.size() - 1)
-                throw runtime_error("The last digit of the number cannot be .");
+
         } else if (tag == param) {
             if (name.empty() || (!isalpha(name[0]) && name[0] != '_')) {
                 throw runtime_error("Variable name must start with a letter or an underscore");
@@ -121,8 +120,11 @@ struct Formula {
                 if(b.front().second.second == param && op == '/')
                     throw runtime_error("not linear");
 //                a is param
-                if (a.front().second.second == num)
+                bool swaped = false;
+                if (a.front().second.second == num){
                     swap(a,b);
+                    swaped = true;
+                }
                 double n = b.front().first;
                 if (precedence(op) == 2){
                     if (op == '*'){
@@ -139,8 +141,13 @@ struct Formula {
                     }
                 }
                 else if(precedence(op) == 1){
-                    if (op == '-')
-                        n *= -1;
+                    if (op == '-'){
+                        if (swaped)
+                            for(auto &it : a)
+                                it.first *= -1;
+                        else
+                            n *= -1;
+                    }
                     if (a.back().second.second == num)
                         a.back().first += n;
                     else
@@ -174,16 +181,22 @@ struct Formula {
             return res;
         };
         auto calculateOnce = [&]()->void{
+            char op = ops.top();
+            ops.pop();
             if (values.empty())
                 throw runtime_error("The number of elements required by the calculation does not match");
             auto val2 = values.top();
             values.pop();
+            vector<value> val1;
             if (values.empty())
-                throw runtime_error("The number of elements required by the calculation does not match");
-            auto val1 = values.top();
-            values.pop();
-            char op = ops.top();
-            ops.pop();
+                if(precedence(op) == 1)
+                    val1 = vector<value>{ {0, make_pair(-1, num)} };
+                else
+                    throw runtime_error("Multiplication and division symbols cannot be preceded by no numbers");
+            else{
+                val1 = values.top();
+                values.pop();
+            }
             values.push(applyOp(val1, val2, op));
         };
         for (int i = start; i <= end; ++i) {
@@ -199,17 +212,22 @@ struct Formula {
                 if (words[i].name == "(") {
 //                    recursion the content in ()
                     int s = ++i, n=1;
-                    while(n){
+                    while(n && i <= end ){
                         if (words[i].name == ")")
                             n--;
                         else if (words[i].name == "(")
                             n++;
                         i++;
                     }
+                    if (n)
+                        throw runtime_error("The number of parentheses does not match");
                     i--;
                     int e = i-1;
                     values.push(parseExpression(s,e,words));
-                } else {
+                }
+                else if (words[i].name == ")")
+                    throw runtime_error("The number of parentheses does not match");
+                else {
                     while (!ops.empty() && precedence(ops.top()) >= precedence(words[i].name[0]))
                         calculateOnce();
                     ops.push(words[i].name[0]);
