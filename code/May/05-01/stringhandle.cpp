@@ -4,11 +4,16 @@
 
 ///题目链接： https://notes.sjtu.edu.cn/s/RcJ6mS3NS
 
-#include "bits/stdc++.h"
+#include <iostream>
+#include <vector>
+#include <map>
+#include <stack>
+#include <algorithm>
+#include <iomanip>
 
 using namespace std;
 
-const std::vector<char> OP = {'=', '{', '}', '+', '-', '*', '/', '(', ')'};
+static const std::vector<char> OP = {'=', '{', '}', '+', '-', '*', '/', '(', ')'};
 enum TAG {
     num,
     op,
@@ -18,9 +23,7 @@ enum TAG {
 struct Word {
     string name;
     TAG tag;
-
-    explicit Word() = default;
-
+    explicit Word():name{}, tag{} {}
     explicit Word(const string_view &n, TAG t) {
         name = string(n);
         tag = t;
@@ -243,7 +246,7 @@ struct Formula {
 
     }
 
-    void displayCoefficients() const {
+    void displayCoefficients() const noexcept {
         for (auto &it : coefficient) {
             cout << it << " ";
         }
@@ -311,6 +314,7 @@ public:
             if (!getline(cin, line))
                 break;
             vector<Word> words = split(line);
+
             equations.emplace_back(words);
         }
         // sort variable
@@ -381,7 +385,7 @@ public:
 
     }
 
-    void displayFormulas(){
+    void displayFormulas[[maybe_unused]]() const {
         for(auto &f : formulas){
             f.displayCoefficients();
             cout << '\n';
@@ -399,7 +403,7 @@ int main() {
     }
     catch (const runtime_error &e) {
         cerr << "Caught an exception: " << e.what() << endl;
-        exit(-1);
+        return 1;
     }
 
     return 0;
