@@ -2,6 +2,8 @@
 // Created by VhahahaV on 2024/5/8.
 //
 //5min
+#include "bits/stdc++.h"
+using namespace std;
 class Solution {
 public:
     void merge(vector<int>& nums1, int m, vector<int>& nums2, int n) {

@@ -2,6 +2,8 @@
 // Created by VhahahaV on 2024/5/8.
 //
 //4min
+#include "bits/stdc++.h"
+using namespace std;
 class Solution {
 public:
     int majorityElement(vector<int>& nums) {

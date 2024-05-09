@@ -4,6 +4,8 @@
 #include "bits/stdc++.h"
 using namespace std;
 //37min
+#include "bits/stdc++.h"
+using namespace std;
 class Solution {
 public:
 // F[i][j] = max(F[i+1][j].max-F[i+1][j].min , a[i] - F[i+1][j].min ,

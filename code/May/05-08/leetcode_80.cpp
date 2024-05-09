@@ -2,6 +2,8 @@
 // Created by VhahahaV on 2024/5/8.
 //
 //7min
+#include "bits/stdc++.h"
+using namespace std;
 class Solution {
 public:
     int removeDuplicates(vector<int>& nums) {
