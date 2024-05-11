@@ -5,3 +5,4 @@ PROJECT(05-10)
 
 ADD_EXECUTABLE(luogu_T451173 luogu_T451173.cpp)
 ADD_EXECUTABLE(leetcode_2960 leetcode_2960.cpp)
+ADD_EXECUTABLE(luogu_T448847 luogu_T448847.cpp)
