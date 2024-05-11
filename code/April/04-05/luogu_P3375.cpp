@@ -12,7 +12,7 @@ vector<int> getNext(const string &PatternStr){
     vector<int> next(PatternStr.size(),0);
     int len = 0;
     int i = 1;
-//   len为上个字串的最长长度，i 为 行进到PatternStr的位置
+//   len为已经目前前后缀能匹配上的长度，i 为 行进到PatternStr的位置
 
     while(i < PatternStr.size()){
 //        循环开始时，len为上一个字串的最长公共字串长度
