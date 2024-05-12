@@ -21,7 +21,7 @@ vector<double> split(string &formula){
 //    ax^2+bx+c
     vector<int> cofs(3);
     int isLeft = 1;
-    bool cof = 1;
+    int cof = 1;
     for(int i = 0 ; i < formula.size();i++){
         if(isdigit(formula[i])){
             int start = i;
@@ -31,7 +31,7 @@ vector<double> split(string &formula){
             string content(formula.begin()+start,formula.begin()+(i--));
             int n = stoi(content);
             cof *= n;
-            if ((i+1) < formula.size() && formula[i+1] != 'x'){
+            if ((i+1) >= formula.size()||(i+1) < formula.size() && formula[i+1] != 'x'){
                 cofs[2] += (cof*isLeft);
                 cof = 1;
             }
@@ -88,7 +88,7 @@ int main() {
     }
     else{
         for(auto &x : res)
-            cout << fixed << setprecision(2) << x<<'\n';
+            cout << fixed << setprecision(2) << x<<' ';
     }
 }
 // 64 位输出请用 printf("%lld")
