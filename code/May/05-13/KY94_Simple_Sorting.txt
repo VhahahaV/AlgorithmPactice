@@ -1,0 +1,30 @@
+/*
+描述
+You are given an unsorted array of integer numbers. Your task is to sort this array and kill possible duplicated elements occurring in it.
+输入描述：
+For each case, the first line of the input contains an integer number N representing the quantity of numbers in this array(1≤N≤1000). Next N lines contain N integer numbers(one number per each line) of the original array.
+输出描述：
+For each case ,outtput file should contain at most N numbers sorted in ascending order. Every number in the output file should occur only once.
+*/
+
+#include<iostream>
+#include<algorithm>
+#include<set>
+using namespace std;
+
+int main(){
+	int n ;
+	cin >> n;
+	set<int> nums;
+	for(int i = 0; i < n ; i++){
+		int tmp;
+		cin >> tmp;
+		if(!nums.count(tmp))
+			nums.insert(tmp);
+	}
+	// sort( nums.begin() , nums.end() );Ts
+	for ( auto &it : nums)
+		cout << it << " " ;
+	
+	return 0;
+}

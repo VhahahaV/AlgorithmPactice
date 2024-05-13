@@ -1,0 +1,43 @@
+/*
+描述
+    A common typing error is to place the hands on the keyboard one row to the right of the correct position. So "Q" is typed as "W" and "J" is typed as "K" and so on. You are to decode a message typed in this manner.
+输入描述：
+    Input consists of several lines of text. Each line may contain digits, spaces, upper case letters (except Q, A, Z), or punctuation shown above [except back-quote (`)]. Keys labelled with words [Tab, BackSp, Control, etc.] are not represented in the input.
+输出描述：
+    You are to replace each letter or punctuation symbol by the one immediately to its left on the QWERTY keyboard shown above. Spaces in the input should be echoed in the output.
+*/
+
+#include<iostream>
+#include<map>
+#include<vector>
+#include<unordered_map>
+using namespace std;
+
+int main() {
+    vector<string> Keyboard{"`1234567890-=","QWERTYUIOP[]\\","ASDFGHJKL;'","ZXCVBNM,./"};
+    unordered_map<char, char> key2key;
+    for (auto& line : Keyboard) {
+    int n = line.size();
+        for (int i = 1; i < n; i++) {
+            key2key[line[i]] = line[i - 1];
+        }
+    }
+
+    string input;
+    vector<string> ans;
+    while (getline(cin, input)) {
+    for (auto& ch : input) {
+            if (ch == ' ')
+                continue;
+            ch = key2key[ch];
+        }
+        ans.emplace_back(input);
+    }
+    for (auto& line : ans) {
+    cout << line << endl;
+    }
+return 0;
+
+}
+
+                                    

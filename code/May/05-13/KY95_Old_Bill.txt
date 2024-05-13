@@ -1,0 +1,46 @@
+/*
+描述
+    Among grandfather's papers a bill was found.     72 turkeys $_679_     The first and the last digits of the number that obviously represented the total price of those turkeys are replaced here by blanks (denoted _), for they are faded and are illegible. What are the two faded digits and what was the price of one turkey?     We want to write a program that solves a general version of the above problem.     N turkeys $_XYZ_     The total number of turkeys, N, is between 1 and 99, including both. The total price originally consisted of five digits, but we can see only the three digits in the middle. We assume that the first digit is nonzero, that the price of one turkeys is an integer number of dollars, and that all the turkeys cost the same price.     Given N, X, Y, and Z, write a program that guesses the two faded digits and the original price. In case that there is more than one candidate for the original price, the output should be the most expensive one. That is, the program is to report the two faded digits and the maximum price per turkey for the turkeys.
+输入描述：
+    The first line of the input file contains an integer N (0<N<100), which represents the number of turkeys. In the following line, there are the three decimal digits X, Y, and Z., separated by a space, of the original price $_XYZ_.
+输出描述：
+    For each case, output the two faded digits and the maximum price per turkey for the turkeys.
+*/
+
+#include<iostream>
+#include<vector>
+
+#include<string>
+using namespace std;
+
+int main() {
+    int X, Y, Z;
+    auto check = []( int Money, int n)->int{
+        if (Money % n)
+            return 0;
+        return Money / n;
+    };
+    int n;
+    vector<vector<int>> ans;
+    while (cin >> n >> X >> Y >> Z) {
+        bool flag = true;
+        int money = X * 1000 + Y * 100 + Z * 10;
+        for ( int i = 9 ; i > 0 && flag ; i--) {
+            for ( int j = 9 ; j >= 0 && flag; j--) {
+                int tmp = i * 10000 + j;
+                int perPrice = check(money + tmp, n);
+                if (perPrice)
+                    ans.emplace_back(vector<int>{i, j, perPrice}),flag = false;
+
+            }
+        }
+        if (flag) ans.emplace_back(vector<int>{0});
+    }
+    for (auto& line : ans) {
+        for (auto it : line)
+            cout << it << " ";
+        cout << '\n';
+    }
+
+    return 0;
+}
