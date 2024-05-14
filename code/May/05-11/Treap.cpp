@@ -24,10 +24,7 @@ private:
         node(const value_type& key_):key(key_),priority(rand()),hei(1),siz(1){}
     };
     typedef pair<node*,node*> pii;
-
-    node *root;
     Compare cmp;
-public:
     int height(node *r){
         if (!r) return 0;
         return r->hei;
@@ -70,9 +67,9 @@ public:
             return v;
         }
     }
-    bool insert(node *x){
+    bool insert(node *r,node *x){
         auto key1 = x->key.first;
-        pii res = split(root, key1);
+        pii res = split(r, key1);
         auto key2 = res.first->key.first;
 //        如果key本来存在树中，则res.first.key.first应该为key
         if(!cmp(key1,key2) && !cmp(key2,key1))
@@ -80,15 +77,15 @@ public:
         else
             res.first = merge(res.first, x);
 //        if(!find(root , key)) res.first = merge(res.first, new node(key));
-        root = merge(res.first, res.second);
+        r = merge(res.first, res.second);
     }
-    void erase(node *x){
+    void erase(node *r,node *x){
 //        o的右子树的根节点为key
         auto key = x->key.first;
-        pii o = split(root, key - 1);
+        pii o = split(r, key - 1);
         pii p = split(o.second, key);
         delete p.first;
-        root = merge(o.first, p.second);
+        r = merge(o.first, p.second);
     }
     node* getmin(node *cur){
         node *ret = cur;
