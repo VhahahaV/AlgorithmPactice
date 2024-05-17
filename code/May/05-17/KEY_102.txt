@@ -1,0 +1,67 @@
+#include <iostream>
+#include <ctype.h>
+#include<stack>
+using namespace std;
+
+int main() {
+    string line;
+    while(cin >> line){
+        stack<double> nums;
+        stack<char> ops;
+        auto  preference = [](char op)->int{
+            if(op == '+' || op == '-') return 0;
+            if(op == '*' || op == '/') return 1;
+            return -1;
+        };
+        auto operate = [](double a, double b, char op)->double{
+            double ans = 0;
+            switch (op) {
+                case '+':ans = a+b;break;
+                case '-':ans = a-b;break;
+                case '*':ans = a*b;break;
+                case '/':ans = a/b;
+            }
+            return ans;
+        };
+        auto cleanStack = [&](){
+            while(!ops.empty()){
+                        double b = nums.top();nums.pop();
+                        double a = nums.top();nums.pop();
+                        char curOp = ops.top();ops.pop();
+                        nums.push(operate(a, b, curOp));
+                    }
+        };
+
+        int n = line.size();
+        for(int i = 0 ; i < n;i++){
+            if(isdigit(line[i])){
+                string num{line[i]};
+                while(i+1 < n && isdigit(line[i+1])){
+                    num.push_back(line[++i]);
+                }
+                nums.push(stod(num));
+            }
+            else{
+                char op = line[i];
+                if(preference(op) == 1){
+                    while(!ops.empty() &&preference( ops.top())==1 ){
+                        double b = nums.top();nums.pop();
+                        double a = nums.top();nums.pop();
+                        char curOp = ops.top();ops.pop();
+                        nums.push(operate(a, b, curOp));
+                    }
+                    ops.push(op);
+                }
+                else{
+                    cleanStack();
+                    ops.push(op);
+                }
+            }
+
+        }
+        cleanStack();
+
+        cout << nums.top() << '\n';
+    }
+}
+// 64 位输出请用 printf("%lld")

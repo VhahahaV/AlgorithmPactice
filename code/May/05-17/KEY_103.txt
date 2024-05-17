@@ -1,0 +1,39 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+// 19min
+string exponential(int n){
+    if(n==0) return "0";
+    else if(n==1) return "1";
+    int index = 0;
+    vector<string> ans;
+    while(n){
+        if(n & 1){
+            // cout << index << endl;
+            string cur = exponential(index);
+            ans.emplace_back(cur);
+        }
+        n = n>>1;index++;
+    }
+    string tmp;
+    for(auto it = ans.rbegin() ; it != ans.rend();it++){
+        if(tmp=="")
+            tmp += "2(";
+        else
+            tmp += "+2(";
+        if(*it == "1")
+            tmp.pop_back();
+        else{
+            tmp+=*it;
+            tmp+=")";
+        }
+    }
+    return tmp;
+}
+
+int main() {
+    int n;
+    cin >> n;
+    cout << exponential(n);
+}
+// 64 位输出请用 printf("%lld")

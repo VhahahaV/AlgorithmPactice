@@ -10,19 +10,43 @@
 #include<iostream>
 
 #include<vector>
-
+#include<set>
 using namespace std;
 
-int main(){
-	int n = 6;
-	vector<vector<int>> maze(n , vector<int>(n);
-	for(int i  = 0 ; i < n ; i ++){
-		for(int j = 0 ; j < n ; j++){
-			cin >> maze[i][j];
-		}
-	}
-	int sx,sy,ex,ey;
-	cin >> sx >> sy >> ex >> ey;
-	
-	return 0;
+vector<vector<int>> value(6, vector<int>(6));
+vector<vector<int>> maze(6, vector<int>(6));
+int sx, sy, ex, ey;
+
+void dfs(int i, int j, int last_i, int last_j, int status) {
+    if (last_i == -1) {
+        dfs(i, j + 1, i, j, 1);
+        dfs(i - 1, j, i, j, 1);
+        dfs(i + 1, j, i, j, 1);
+        dfs(i, j - 1, i, j, 1);
+        return;
+    }
+    if (i < 0 || i > 5 || j < 0 || j > 5 || (i == sx && j == sy))
+        return ;
+    int cur = status *  maze[i][j];
+    if (value[i][j] && value[i][j] <= cur + value[last_i][last_j])
+        return;
+    value[i][j] = cur + value[last_i][last_j];
+    int newStatus = cur % 4 + 1;
+    dfs(i, j + 1, i, j, newStatus);
+    dfs(i - 1, j, i, j, newStatus);
+    dfs(i + 1, j, i, j, newStatus);
+    dfs(i, j - 1, i, j, newStatus);
+}
+
+int main() {
+    int n = 6;
+    for (int i  = 0 ; i < n ; i ++) {
+        for (int j = 0 ; j < n ; j++) {
+            cin >> maze[i][j];
+        }
+    }
+    cin >> sx >> sy >> ex >> ey;
+    dfs(sx, sy, -1, -1, 1);
+    cout << value[ex][ey];
+    return 0;
 }

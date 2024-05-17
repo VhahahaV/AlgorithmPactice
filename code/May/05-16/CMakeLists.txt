@@ -1,0 +1,9 @@
+cmake_minimum_required(VERSION 3.24)
+
+SET(CMAKE_CXX_STANDARD 17)
+PROJECT(05-15)
+
+ADD_EXECUTABLE(leetcode_1953 leetcode_1953.cpp)
+ADD_EXECUTABLE(luogu_P1007 luogu_P1007.cpp)
+ADD_EXECUTABLE(luogu_P1095 luogu_P1095.cpp)
+ADD_EXECUTABLE(luogu_P1056 luogu_P1056.cpp)
