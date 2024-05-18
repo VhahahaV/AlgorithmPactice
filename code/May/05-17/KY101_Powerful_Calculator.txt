@@ -1,0 +1,118 @@
+#include <any>
+#include <cstddef>
+#include <iostream>
+#include <string>
+#include<algorithm>
+#include<vector>
+using namespace std;
+
+// 54min 减法耗时比较多
+string addBig(string a, string b) {
+    int carry = 0;
+    size_t index = 0;
+    string ans;
+    if (a.size() < b.size()) swap(a, b);
+    reverse(a.begin(), a.end());
+    reverse(b.begin(), b.end());
+    while (index < b.size()) {
+        int num = (a[index] - '0') + (b[index] - '0') + carry;
+        carry = num / 10;
+        ans += to_string(num % 10);
+        index++;
+    }
+    while (index < a.size()) {
+        int num = (a[index] - '0') + carry;
+        carry = num / 10;
+        ans += to_string(num % 10);
+        index++;
+    }
+    if (carry) ans += to_string(carry);
+    reverse(ans.begin(), ans.end());
+    return ans;
+}
+
+bool bigger(string &a,string &b){
+    if(a.size() > b.size()) return true;
+    else if(a.size() < b.size()) return false;
+    else{
+        int index =0;
+        while(a[index] == b[index]) index++;
+        return a[index] > b[index];
+    }
+}
+string minusBig(string a, string b) {
+    int carry = 0;
+    size_t index = 0;
+    string ans;
+    int sign = false;
+    if (bigger(b,a)) swap(a, b),sign=true;
+    reverse(a.begin(), a.end());
+    reverse(b.begin(), b.end());
+    while (index < b.size() && index < a.size()) {
+        int num = (a[index] - '0') - (b[index] - '0') - carry;
+        if (num < 0 )
+            carry = (num * -1 -1) / 10 + 1;
+        else
+            carry = 0;
+        while (num < 0) num += 10;
+        ans += to_string(num % 10);
+        index++;
+    }
+
+    while (index < a.size()) {
+        int num = (a[index] - '0') - carry;
+        if (num < 0 )
+            carry = (num * -1) / 10 + 1;
+        else
+            carry = 0;
+        while (num < 0) num += 10;
+        ans += to_string(num % 10);
+        index++;
+    }
+
+    if(ans.back() == '0') ans.pop_back();
+    if (carry) ans += to_string(carry);
+
+    reverse(ans.begin(), ans.end());
+    if(sign) ans = "-" + ans;
+    return ans;
+}
+
+
+
+string productBig(string a, string b) {
+    size_t index = 0;
+    string ans;
+    if (a.size() < b.size()) swap(a, b);
+    vector<string> a_pro(10);
+    a_pro[1] = a;
+    a_pro[0] = "0";
+    for(int i = 2 ; i < 10 ; i++){
+        a_pro[i] = addBig(a, a_pro[i-1]);
+    }
+    reverse(a.begin(), a.end());
+    reverse(b.begin(), b.end());
+    while (index < b.size()) {
+        string cur = a_pro[b[index]-'0'];
+        string prex(index,'0');
+        cur = cur+prex;
+        if(index==0 || ans == "0")
+            ans = cur;
+        else{
+            ans = addBig(ans, cur);
+        }
+        index++;
+    }
+    return ans;
+}
+
+
+int main() {
+    string a, b;
+    cin >> a >> b;
+    cout << addBig(a, b) << '\n' << minusBig(a,  b) << '\n' << productBig(a, b);
+// 741442026806162833824298526399853094868057688436
+// 741442026806162833824298526399853094869057688436
+
+}
+// 64 位输出请用 printf("%lld")

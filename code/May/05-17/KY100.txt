@@ -1,0 +1,61 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include<algorithm>
+using namespace std;
+
+int main() {
+    int repeatTimes = 0;
+while (cin >> repeatTimes && repeatTimes != 0)
+{ // repeatTimes中保存了一共输入了多少行
+
+    vector<string> path[15];
+    auto parseLine = [](string strDir)->vector<string>{
+        string name = "";
+        vector<string> ans;
+        for(int i = 0 ; i < strDir.size();i++){
+            if(strDir[i] == '\\'){
+                if(name != "")
+                    ans.emplace_back(name);
+                name="";
+            }
+            else{
+                name += strDir[i];
+            }
+        }
+        if(name != "")
+            ans.emplace_back(name);
+        return ans;
+    };
+
+    for(int i = 0 ; i < repeatTimes ; i++){
+        string line;
+        cin >> line;
+        auto parsedDir= parseLine(line);
+        path[i] = (parsedDir);
+    }
+
+    sort(path, path + repeatTimes);
+    for (int i = 0; i < repeatTimes; i++)
+    {
+
+        int index = 0;
+        string space;
+
+
+        while (i != 0 && index < path[i].size() &&
+               index < path[i - 1].size() &&
+               path[i][index] == path[i - 1][index])
+        {
+            ++index;
+            space += "  ";
+        }
+        for (; index < path[i].size(); index++, space += "  ")
+            cout << space << path[i][index] << "\n";
+    }
+    cout << endl;
+}
+return 0;
+
+}
+// 64 位输出请用 printf("%lld")
