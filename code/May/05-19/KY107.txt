@@ -1,0 +1,74 @@
+#include "bits/stdc++"
+
+using namespace std;
+//kruskal 算法，对有所有的边排序，
+
+const int MOD = 100000;
+int roadNum = 0;
+vector<int> father;
+
+void findRoot(int u){
+    if(father[u] != u){
+        father[u] = findRoot(father[u]);
+    }
+    return father[u];
+}
+
+bool jointSet(int a , int b){
+    int father1 = findRoot(a);
+    int father2 = findRoot(b);
+    if(father1!=father2){
+        father[father2] = father1;
+        roadNum++;
+        return true;
+    }
+    return false;
+}
+
+
+int main(){
+    int n , m;
+    cin >> n >> m;
+    vector<pair<int,pair<int,int>>> maze;
+    father.resize(n);
+    for(int i = 0; i < n ; i++)
+        father[i] = i;
+    for(int k = 0 ,len=1;k<m;k++;){
+        int u,v;
+        cin >> u >> v;
+        maze.emplace_back(len,u,v);
+        len*=2;len%=MOD;
+    }
+    vector<vector<pair<int,int>>> lsm(n);
+    for(auto &it : maze){
+        auto &[u,v] = it.second;
+        if(jointSet(u,v)){
+            lsm[u].emplace_back(v,it.first);
+            lsm[v].emplace_back(u,it.first);
+        }
+    }
+
+    vector<int> ans(n);
+    int start;
+    for(int i = 0 ; i < n ;i++){
+        if(lsm[i].size()==1){
+            start=i;
+            break;
+        }
+    }
+    for(int i = 0 ; i < n-1; i++){
+        auto &target = lsm[start];
+        for(auto &[k,v]:target){
+            if(k != start){
+                ans[k] = (ans[start]+v) % MOD;
+                start = k;
+            }
+        }
+    }
+
+    for(auto &it : ans)
+        it = (abs(it-ans[0]))%MOD;
+    for(int i = 1; i < ans.size();i++)
+        cout << ans[i] << '\n';
+    return 0;
+}
