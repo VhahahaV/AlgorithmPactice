@@ -1,0 +1,69 @@
+#include <iostream>
+
+#include <vector>
+
+using namespace std;
+
+int main(){
+    int date1,date2;
+    vector<vector<int>> dayTable{
+                {31,28,31,30,31,30,31,31,30,31,30,31},
+                {31,29,31,30,31,30,31,31,30,31,30,31}
+        };
+    auto isLeap = [](int y)->bool{
+       return (y%4==0)&&(y%100!=0) || y%400==0;
+    };
+    auto isEarlier = [&](int d1,int m1,int y1,int d2,int m2,int y2) ->bool{
+            if(y1!=y2) return y1<y2;
+            if(m1!=m2) return m1<m2;
+            if(d1!=d2) return d1<d2;
+            return false;
+    };
+    auto haveByDay = [&](int y,int m,int d)->int{
+            int ans = 0;
+            if(isLeap(y)){
+                for(int i = 0 ; i < m-1 ;i++)
+                    ans+=dayTable[1][i];
+            }
+            else{
+                for(int i = 0 ; i < m-1 ;i++)
+                    ans+=dayTable[0][i];
+            }
+            return ans+d;
+        };
+        auto getDifferDay = [&](int y1,int m1,int d1,int y2,int m2,int d2)->int {
+            if(isEarlier(d1,m1,y1,d2,m2,y2)){
+                swap(d1,d2), swap(m1,m2), swap(y1,y2);
+            }
+            int diffYears = y1-y2;
+            if(diffYears){
+                int differDays;
+                if(isLeap(y2) )
+                    differDays = 366-haveByDay(y2,m2,d2)+1;
+                else
+                    differDays = 365-haveByDay(y2,m2,d2)+1;
+                for(int cur = y2+1; cur < y1 ; cur++){
+                    if(isLeap(cur))
+                        differDays += 366;
+                    else
+                        differDays += 365;
+                }
+                differDays+=haveByDay(y1,m1,d1);
+                return differDays;
+            }
+            else{
+                int differDays = haveByDay(y1,m1,d1) - haveByDay(y2,m2,d2) + 1;
+                return differDays;
+            }
+            return 0;
+        };
+    while(cin >> date1 >> date1){
+        int day1 = date1%100,day2 = date2%100;
+        date1/=100,date2/=100;
+        int mon1 = date1%100,mon2 = date2%100;
+        int year1 = date1/100, year2 = date2/100;
+        cout << getDifferDay(year1,mon1,day1,year2,mon2,day2) << '\n';
+
+    }
+    return 0;
+}

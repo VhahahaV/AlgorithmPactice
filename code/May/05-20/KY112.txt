@@ -1,0 +1,30 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int main() {
+    ios::sync_with_stdio(false),cin.tie(nullptr),cout.tie(nullptr);
+    int n1,n2;
+    cin >> n1 >> n2;
+    vector<int> nums1(n1+1);
+    for(int i = 1 ;i <= n1 ;i++){
+        cin >> nums1[i];
+    }
+    vector<int> nums2(n2+1);
+    for(int i = 1 ;i <= n2 ;i++){
+        cin >> nums2[i];
+    }
+    int s1,e1,s2,e2;
+    cin >> s1 >> e1 >> s2 >> e2;
+    vector<int> newNums;
+    for(int i=s1;i<=e1;i++)
+        newNums.emplace_back(nums1[i]);
+    for(int i=s2;i<=e2;i++)
+        newNums.emplace_back(nums2[i]);
+    // sort(newNums.begin(),newNums.end());
+    int index = (newNums.size()-1)/2;
+    cout << newNums[index];
+
+}
+// 64 位输出请用 printf("%lld")
