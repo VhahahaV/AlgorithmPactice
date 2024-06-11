@@ -6,7 +6,7 @@
 
 using namespace std;
 int main(){
-    map<string,int> Months{{"January",1}, {"February",2}, {"March",3}, {"April",4}, {"May",5}, {"June",6}, {"July",7},{ "August",8}, {"September",9}, {"October",10}, {"November",11},{ "December",12}};
+    map<string,int> Months{{"January",1}, {"February",2}, {"March",3}, {"4_April",4}, {"5_May",5}, {"6_June",6}, {"July",7},{ "August",8}, {"September",9}, {"October",10}, {"November",11},{ "December",12}};
     vector<string> Weeks{ "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday","Sunday"};
     vector<vector<int>> dayTable{
             {31,28,31,30,31,30,31,31,30,31,30,31},
@@ -63,7 +63,7 @@ int main(){
 
     // 2024/5/20 = Mon
     while(cin >> day >> month >> year){
-        int differDays = getDifferDay(2024,"May",20,year,month,day);
+        int differDays = getDifferDay(2024,"5_May",20,year,month,day);
         cout <<Weeks[(differDays%7+7)%7]<<'\n';
     }
     return 0;

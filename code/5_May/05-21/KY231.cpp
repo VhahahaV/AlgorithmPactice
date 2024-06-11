@@ -31,6 +31,14 @@ long long dfs(const vector<int>& nums,const long long ave,int index){
 }
 
 int main() {
+    vector<int> nums{0,1,2,3,4,5};
+    nums.reserve(100);
+    auto it = nums.begin()+2;
+    cout << *it << endl;
+
+    nums.emplace_back(1);
+    cout << *it;
+    return 0;
     string line;
     while(getline(cin, line)){
         int i = 0;

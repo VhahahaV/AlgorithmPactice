@@ -1,0 +1,6 @@
+cmake_minimum_required(VERSION 3.24)
+
+SET(CMAKE_CXX_STANDARD 17)
+PROJECT(06-11)
+
+ADD_EXECUTABLE(luogu_P6915 luogu_P6915.cpp)

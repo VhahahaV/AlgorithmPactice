@@ -1,0 +1,6 @@
+cmake_minimum_required(VERSION 3.24)
+
+SET(CMAKE_CXX_STANDARD 17)
+PROJECT(06-02)
+
+ADD_EXECUTABLE(VhahahaV luogu_P4839.cpp)
