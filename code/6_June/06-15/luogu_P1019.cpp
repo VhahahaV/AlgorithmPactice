@@ -14,6 +14,7 @@ int maxLen = 0;
 void getLen(const vector<string> &words,const vector<vector<WordPair>> &nextWords,vector<int> &useTimes,int curIndex,int curLen){
     if(useTimes[curIndex] > 2)
         return ;
+//    cout << "cur index :" << curIndex << ", cur Len : " << curLen << '\n';
     maxLen = max(maxLen,curLen);
     for(auto &[index,len] : nextWords[curIndex]){
         useTimes[index]++;
@@ -27,7 +28,8 @@ int main(){
     vector<string> words(n);
     for(int i = 0 ; i < n ; i++)
         cin >> words[i];
-
+    char start;
+    cin >> start;
     auto getNextWords = [&](int index)->vector<WordPair>{
         vector<WordPair> res;
         auto curStr = words[index];
@@ -51,7 +53,7 @@ int main(){
                 }
             }
             int len = shareLen.back();
-            if(len && len != w.size() && len != curStr.size())
+            if(len && len < w.size() && len < curStr.size())
                 res.emplace_back(k,len);
         }
         return res;
@@ -64,6 +66,7 @@ int main(){
     }
     vector<int> useTimes(n);
     for(int i = 0 ; i < n ; i++){
+        if(words[i].front() != start) continue;
         useTimes[i]++;
         getLen(words,nextWords,useTimes,i,words[i].size());
         useTimes[i]--;
