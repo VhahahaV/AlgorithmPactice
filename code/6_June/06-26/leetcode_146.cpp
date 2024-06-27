@@ -7,14 +7,14 @@ using namespace std;
 
 // class LRUCache {
 //     map<int,int> mCache;
-//     struct node{
-//         node *last = nullptr;
-//         node *next = nullptr;
+//     struct MemPage{
+//         MemPage *last = nullptr;
+//         MemPage *next = nullptr;
 //         int key;
-//         node(node *l ,node *n , int k):last(l),next(n),key(k){}
+//         MemPage(MemPage *l ,MemPage *n , int k):last(l),next(n),key(k){}
 //     };
-//     map<int,*node> nodeCache;
-//     node *lastestUseNode;
+//     map<int,*MemPage> nodeCache;
+//     MemPage *lastestUseNode;
 //     int mNums;
 //     int mCap;
 // public:
@@ -43,11 +43,11 @@ using namespace std;
 //     void useKey(int key){
 
 //         if(!lastestUseNode){
-//             lastestUseNode = new node(nullptr,nullptr,key);
+//             lastestUseNode = new MemPage(nullptr,nullptr,key);
 //         }
 //         else{
 //             auto cur = lastestUseNode;
-//             lastestUseNode = new node(cur,nullptr,key);
+//             lastestUseNode = new MemPage(cur,nullptr,key);
 //             cur ->next = lastestUseNode;
 //             if(mCache.count(key)){
 //                 cur = lastestUseNode;

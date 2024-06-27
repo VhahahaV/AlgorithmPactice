@@ -1,7 +1,7 @@
 //
 // Created by VhahahaV on 2024/4/21.
 //
-//  Definition for a binary tree node.
+//  Definition for a binary tree MemPage.
 //22min
 #include "bits/stdc++.h"
 

@@ -76,7 +76,7 @@ private:
             return false;
         else
             res.first = merge(res.first, x);
-//        if(!find(root , key)) res.first = merge(res.first, new node(key));
+//        if(!find(root , key)) res.first = merge(res.first, new MemPage(key));
         r = merge(res.first, res.second);
     }
     void erase(node *r,node *x){

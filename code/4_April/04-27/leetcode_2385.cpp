@@ -7,7 +7,7 @@ using namespace std;
 
 ////unordered_map 和 unordered_set 的用法可以参考一下链接： https://blog.csdn.net/lzq8090/article/details/129788666
 
-//Definition for a binary tree node.
+//Definition for a binary tree MemPage.
 struct TreeNode {
      int val;
      TreeNode *left;

@@ -8,33 +8,33 @@
 
 using namespace std;
 
-struct node{
+struct MemPage{
     int val;
-    node* next;
+    MemPage* next;
 public:
-    node(int a):val(a){
+    MemPage(int a): val(a){
         next = nullptr;
     }
 };
 
 class listpoint{
 private:
-    node *head;
+    MemPage *head;
     int size;
 
 public:
     listpoint() = default;
     listpoint(int num):size(num){
-        head = new node(1);
-        node *current = head;
+        head = new MemPage(1);
+        MemPage *current = head;
         for (int i = 2; i <= num; ++i) {
-            current->next = new node(i);
+            current->next = new MemPage(i);
             current = current->next;
         }
         current->next = nullptr;
     }
 
-    bool goAhead(node *&cur , int step,node *&prev){
+    bool goAhead(MemPage *&cur , int step, MemPage *&prev){
         while (step--){
             if (cur->next){
                 prev = cur;
@@ -47,8 +47,8 @@ public:
     }
 
     bool remove(int step){
-        node *current = head;
-        node *prev = nullptr;
+        MemPage *current = head;
+        MemPage *prev = nullptr;
 
 //        if (!current->next)
 //            return false;
@@ -60,7 +60,7 @@ public:
                     head = head->next;
                 else
                     prev->next = current->next;
-                node *del = current;
+                MemPage *del = current;
                 if (!goAhead(current,step+1,prev)){
                     delete(del);
                     break;
@@ -73,7 +73,7 @@ public:
 
 
     void printAll(){
-        node *current = head;
+        MemPage *current = head;
         while (current){
             cout << current->val << " ";
             current = current->next;

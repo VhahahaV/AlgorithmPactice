@@ -24,22 +24,22 @@ edge make_edge(int _v,int _w){
     edge cur;cur.v = _v;cur.w = _w;
     return cur;
 }
-struct node {
+struct MemPage {
     ll dis;
     int v;
-    friend bool operator < (node A,node B){
+    friend bool operator < (MemPage A, MemPage B){
         return A.dis>B.dis;//重载小于号，默认为大顶堆
     }
 };
-node make_node(ll _dis,int _v){
-    node cur;cur.dis = _dis;cur.v = _v;
+MemPage make_node(ll _dis, int _v){
+    MemPage cur;cur.dis = _dis;cur.v = _v;
     return cur;
 }
 vector<edge> g[100005];
 ll dis[3005][3005]; //dis[i][j]表示第i个点到第j个点的最短距离
 ll d[3005]; //存放虚拟点到各个点的最短距离
 int vis[100005];
-priority_queue<node>q; //优先队列来存放顶点和改顶点距源点的距离
+priority_queue<MemPage>priorityQueue; //优先队列来存放顶点和改顶点距源点的距离
 
 bool Dellman_Ford(int s){
     int i,j,k;
@@ -70,9 +70,9 @@ void dijkstra(int s){
     int now;//用于存放从队列中取出当前距离最小的点
     memset(vis,0,sizeof(vis));
     dis[s][s] = 0;
-    q.push(make_node(dis[s][s],s));
-    while(!q.empty()){
-        now = q.top().v;q.pop(); //取出队列中距离最小的点
+    priorityQueue.push(make_node(dis[s][s], s));
+    while(!priorityQueue.empty()){
+        now = priorityQueue.top().v;priorityQueue.pop(); //取出队列中距离最小的点
         if(vis[now] == 1)continue;//如果该点访问过则continue
         vis[now] = 1;
         for(int  i = 0;i<g[now].size();i++){
@@ -80,7 +80,7 @@ void dijkstra(int s){
             int w = g[now][i].w; //边权
             if(dis[s][v]>dis[s][now]+w){
                 dis[s][v] = dis[s][now]+w;
-                q.push(make_node(dis[s][v],v));
+                priorityQueue.push(make_node(dis[s][v], v));
             }
         }
     }

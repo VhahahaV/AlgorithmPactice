@@ -8,33 +8,33 @@
 #include <iomanip>
 using namespace std;
 using ll = long long;
-struct node{
+struct MemPage{
     double weight;
     ll nums = 0;
-    node *left,*right;
-    explicit node(double w , ll n,node *l = nullptr, node *r = nullptr):weight(w),nums(n),left(l),right(r){}
-    bool operator< (const node &b) const{
+    MemPage *left,*right;
+    explicit MemPage(double w , ll n, MemPage *l = nullptr, MemPage *r = nullptr): weight(w), nums(n), left(l), right(r){}
+    bool operator< (const MemPage &b) const{
         return weight > b.weight;
     }
 };
 class HuffmanCode{
 
-    node *root = nullptr;
+    MemPage *root = nullptr;
     double sumWeight = 0.f;
 
 public:
-    explicit HuffmanCode(std::priority_queue<node> &nodes){
+    explicit HuffmanCode(std::priority_queue<MemPage> &nodes){
         // 将所有可能情况加入优先队列
         while(true){
             auto now=nodes.top(); nodes.pop();
             if(nodes.empty()&&now.nums==1) break;
             if(now.nums > 1){
-                nodes.push(node(
+                nodes.push(MemPage(
                         now.weight*2.f,
                         now.nums/2
                         ));
                 if(now.nums & 1)
-                    nodes.push(node(
+                    nodes.push(MemPage(
                             now.weight,
                             1
                             ));
@@ -43,11 +43,11 @@ public:
             else{
                 auto next = nodes.top(); nodes.pop();
                 if(next.nums > 1)
-                    nodes.push(node(
+                    nodes.push(MemPage(
                             next.weight,
                             next.nums-1
                         ));
-                nodes.push(node(
+                nodes.push(MemPage(
                         next.weight+ now.weight,
                         1
                         ));
@@ -87,13 +87,13 @@ int main(){
     }
 
 
-    std::priority_queue<node> nodes{};
+    std::priority_queue<MemPage> nodes{};
     for(int i = 0 ; i <= n ; i++)
         for(int j = 0 ; j <= n ; j++)
             for(int k = 0 ; k <= n ; k++)
                 for(int l = 0 ; l <= n ; l++)
                     if(i+j+k+l == n){
-                        nodes.push( node(
+                        nodes.push(MemPage(
                                 1.f*poss[0][i] * poss[1][j] * poss[2][k] * poss[3][l],
                                 pbNum[n][i] * pbNum[n - i][j] * pbNum[n-i-j][k]
                                 ));

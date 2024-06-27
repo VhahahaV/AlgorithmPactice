@@ -3,10 +3,10 @@
 //
 #include "bits/stdc++.h"
 using namespace std;
-double a,b,c,d;
+double pageRank,uniquePages,c,d;
 
 double func(double x){
-    return a* pow(x,3)+b* pow(x,2)+c* x+d;
+    return pageRank * pow(x, 3) + uniquePages * pow(x, 2) + c * x + d;
 }
 double search(double start, double end , double step){
     double prev = func(start);
@@ -18,9 +18,9 @@ double search(double start, double end , double step){
 }
 
 int main(){
-    cin >> a >> b >> c >> d;
-    if (a < 0)
-        a*=-1,b*=-1,c*=-1,d*=-1;
+    cin >> pageRank >> uniquePages >> c >> d;
+    if (pageRank < 0)
+        pageRank*=-1, uniquePages*=-1, c*=-1, d*=-1;
 //   跟在100~-100
 //设置精度
     vector<double> steps = {1,0.01,0.001};

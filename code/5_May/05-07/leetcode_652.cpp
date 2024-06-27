@@ -2,7 +2,7 @@
 // Created by CZQ on 2024/5/7.
 //
 /**
- * Definition for a binary tree node.
+ * Definition for a binary tree MemPage.
  * struct TreeNode {
  *     int val;
  *     TreeNode *left;

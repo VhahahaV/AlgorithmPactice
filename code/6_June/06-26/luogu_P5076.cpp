@@ -6,16 +6,16 @@
 
 using namespace std;
 
-struct node{
-    node *left, *right;
+struct MemPage{
+    MemPage *left, *right;
     int size;
     int prio;
     int val;
-    node ( int v) :left(nullptr),right(nullptr),val(v),prio(rand()),size(1){}
+    MemPage (int v) : left(nullptr), right(nullptr), val(v), prio(rand()), size(1){}
 };
 struct Treap{
-    node *mHead = nullptr;
-    pair<node *,node *> split(node *r , int key){
+    MemPage *mHead = nullptr;
+    pair<MemPage *,MemPage *> split(MemPage *r , int key){
         if(!r) return make_pair(nullptr, nullptr);
         if(r->val > key){
             auto res = split(r->left,key);
@@ -30,7 +30,7 @@ struct Treap{
             return make_pair(r,res.second);
         }
     }
-    void updateSize(node *r){
+    void updateSize(MemPage *r){
         int res = 1;
         if(r->left)
             res+=r->left->size;
@@ -39,7 +39,7 @@ struct Treap{
         r->size = res;
     }
 
-    node* merge(node *u, node *v){
+    MemPage* merge(MemPage *u, MemPage *v){
         if(u == nullptr) return v;
         if(v == nullptr) return u;
         if(u -> prio < v -> prio){
@@ -53,7 +53,7 @@ struct Treap{
         }
     }
 
-    void insert( node *x ){
+    void insert(MemPage *x ){
         auto key1 = x->val;
         auto res = split(mHead,key1);
         res.first = merge(res.first,x);
@@ -143,7 +143,7 @@ int main(){
                 cout << treap.getPost(x) << '\n';
                 break;
             case 5:
-                treap.insert(new node(x));
+                treap.insert(new MemPage(x));
                 break;
         }
     }

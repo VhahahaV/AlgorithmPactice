@@ -68,8 +68,8 @@ int main(){
 //        }
 //    }
 //    for(int index = 0 ; index < orders.size() ; index++){
-//        int d = orders[index][0], s = orders[index][1],t = orders[index][2];
-//        for (int i = s; i <=  t; ++i) {
+//        int d = orders[index][0], s = orders[index][1],useCnt = orders[index][2];
+//        for (int i = s; i <=  useCnt; ++i) {
 //            if (rooms[i] >= d)
 //                rooms[i] -= d;
 //            else{

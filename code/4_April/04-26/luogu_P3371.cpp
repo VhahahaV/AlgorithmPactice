@@ -23,11 +23,11 @@ struct edge{
 
 
 int main(){
-    priority_queue<node,vector<node>,greater<node>> candidate;
+    priority_queue<MemPage,vector<MemPage>,greater<MemPage>> candidate;
     vector<int> ans;
     int n,m,s;
     cin >> n >> m >> s;
-    vector<vector<node>> maze(n+1);
+    vector<vector<MemPage>> maze(n + 1);
     ans.resize(n+1,INT32_MAX);
     while (m--){
         int u,v,w;

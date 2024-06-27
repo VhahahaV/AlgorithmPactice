@@ -75,8 +75,8 @@ public:
 
 
 int main(){
-//    map<int,int> cnt;
-//    cout << cnt[2];
+//    map<int,int> useCnt;
+//    cout << useCnt[2];
     vector<vector<int>> tasks{{1,2000,2000}};
     Solution solution;
     cout << solution.findMinimumTime(tasks);
