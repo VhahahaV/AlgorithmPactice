@@ -6,3 +6,4 @@ PROJECT(06-26)
 
 ADD_EXECUTABLE(leetcode_146 leetcode_146.cpp)
 ADD_EXECUTABLE(luogu_P5076 luogu_P5076.cpp)
+ADD_EXECUTABLE(luogu_P2700 luogu_P2700.cpp)
