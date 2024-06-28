@@ -132,7 +132,7 @@ int main() {
             MemPage res=priorityQueue.top();
             priorityQueue.pop();
             while(num[pageRank[res.timestamp]] != res.useCnt) {
-                res = priorityQueue.top();
+                res = priorityQueue.top();````
                 priorityQueue.pop();
             }
             num[pageRank[i]]++, num[pageRank[res.timestamp]]=0;
